@@ -17,8 +17,8 @@ def get_existing_conv_pp():
     )
     return gdf
 
-def assign_points_to_regions(gdf_regions, gdf_plants, region_name_col="region_5"):
-    # kopien erzeugen
+def assign_points_to_regions(gdf_regions, gdf_plants, region_name_col="NAME_1"):
+    # kopien erzeugen (Region-Name aus Spalte NAME_1 + Geometrie)
     regions = gdf_regions[[region_name_col, "geometry"]].copy()
     plants = gdf_plants.copy()
 
@@ -33,17 +33,18 @@ def assign_points_to_regions(gdf_regions, gdf_plants, region_name_col="region_5"
         .drop(columns=["index_right"], errors="ignore")
     )
 
+    # Aggregation: Capacity je Region und Technologie
     out = (
-    joined
-    .dropna(subset=[region_name_col])
-    .groupby([region_name_col, "primary_fuel"], as_index=False)["capacity_mw"]
-    .sum()
-    .rename(columns={
-        region_name_col: "Region",
-        "primary_fuel": "Technology",
-        "capacity_mw": "Capacity [MW]"
-    })
-    .sort_values(["Region", "Technology"])
+        joined
+        .dropna(subset=[region_name_col])
+        .groupby([region_name_col, "primary_fuel"], as_index=False)["capacity_mw"]
+        .sum()
+        .rename(columns={
+            region_name_col: "Region",
+            "primary_fuel": "Technology",
+            "capacity_mw": "Capacity [MW]"
+        })
+        .sort_values(["Region", "Technology"])
     )
 
     return out

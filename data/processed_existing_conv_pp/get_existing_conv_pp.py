@@ -11,9 +11,39 @@ def get_existing_conv_pp():
     df = conv_energy.loc[conv_energy["country"] == "AUT"].copy()
 
     gdf = gpd.GeoDataFrame(
-        df[["primary_fuel", "capacity_mw"]],  # keep only what you want
+        df[["primary_fuel", "capacity_mw"]],  # keep whats neccessary
         geometry=gpd.points_from_xy(df["longitude"], df["latitude"]),
         crs="EPSG:4326"
     )
     return gdf
 
+def assign_points_to_regions(gdf_regions, gdf_plants, region_name_col="region_5"):
+    # kopien erzeugen
+    regions = gdf_regions[[region_name_col, "geometry"]].copy()
+    plants = gdf_plants.copy()
+
+    # Spatial join: Punkt-in-Polygon
+    joined = (
+        gpd.sjoin(
+            plants,
+            regions,
+            how="left",
+            predicate="within"   # alternativ: "intersects" bei Grenzfällen
+        )
+        .drop(columns=["index_right"], errors="ignore")
+    )
+
+    out = (
+    joined
+    .dropna(subset=[region_name_col])
+    .groupby([region_name_col, "primary_fuel"], as_index=False)["capacity_mw"]
+    .sum()
+    .rename(columns={
+        region_name_col: "Region",
+        "primary_fuel": "Technology",
+        "capacity_mw": "Capacity [MW]"
+    })
+    .sort_values(["Region", "Technology"])
+    )
+
+    return out

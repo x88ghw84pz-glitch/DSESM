@@ -1,4 +1,3 @@
-# get_re_potential.py
 import xarray as xr
 import atlite
 
@@ -27,6 +26,6 @@ def get_pv_and_wind(cutout, regions, A_pv, A_w, density=3.0):
         return_capacity=True,
     )
     wind_cf = wind_gen / wind_cap
-    print(pv_cap)
+
     return pv_cap, pv_cf, wind_cap, wind_cf
 

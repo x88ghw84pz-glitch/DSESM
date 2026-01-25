@@ -4,7 +4,7 @@ def regional_load():
     
     # national GEGIS time series 
     
-    url_gegis = "C:\Users\steli\DSESM\data\processed_load_profile\load.csv"
+    url_gegis = "https://raw.githubusercontent.com/x88ghw84pz-glitch/DSESM/refs/heads/main/data/processed_load_profile/load.csv"
     
     df_gegis = pd.read_csv(url_gegis, index_col=0, parse_dates=True)
 

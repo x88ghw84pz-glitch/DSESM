@@ -29,3 +29,8 @@ def get_pv_and_wind(cutout, regions, A_pv, A_w, density=3.0):
 
     return pv_cap, pv_cf, wind_cap, wind_cf
 
+def get_cutout():
+    cutout = atlite.Cutout("/Users/simon/Documents/01_Uni/02_Master/S3/05 DSESM/4group assign/era5_aut_2019.nc")
+    return cutout
+
+

@@ -32,8 +32,11 @@ def get_regions():
 # -------------------------------------------------
 # 2) Cutout laden
 # -------------------------------------------------
-def get_cutout(path="data/era5_aut_2019.nc"):
-    return atlite.Cutout(path)
+def get_cutout():
+    cutout = atlite.Cutout(
+        "/Users/simon/Documents/01_Uni/02_Master/S3/05 DSESM/4group assign/era5_aut_2019.nc"
+    )
+    return cutout
 
 
 # -------------------------------------------------

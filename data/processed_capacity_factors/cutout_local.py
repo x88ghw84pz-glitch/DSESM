@@ -1,6 +1,7 @@
 import xarray as xr
 import atlite
 import geopandas as gpd
+from atlite.gis import ExclusionContainer
 
 
 

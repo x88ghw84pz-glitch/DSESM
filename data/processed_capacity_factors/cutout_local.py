@@ -31,7 +31,7 @@ def get_regions():
 ### Müssen schauen wie wir die datei ablegen
 def get_cutout():
     cutout = atlite.Cutout(
-        r"C:\\Users\steli\DSESM\data\\processed_capacity_factors\\era5_aut_2019.nc"
+        r"C:\\Users\steli\Documents\WS25&26\Data science\\era5_aut_2019.nc"
     )
     return cutout
 

@@ -8,8 +8,8 @@ from atlite.gis import shape_availability
 import matplotlib.pyplot as plt
 from rasterio.plot import show
 import numpy as np
-from pathlib import Path
- 
+from urllib.request import urlretrieve
+from os.path import basename
 
 def get_RE_potential():
     excluder_wind = ExclusionContainer(crs=3035, res=100)
@@ -18,9 +18,13 @@ def get_RE_potential():
     shape_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2F&files=country_shapes.geojson"
     protected_areas_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2Fwdpa&files=WDPA_Oct2022_Public_shp-AUT.tif"
     copernicus_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2Fcopernicus-glc&files=PROBAV_LC100_global_v3.0.1_2019-nrt_Discrete-Classification-map_EPSG-4326-AT.tif"
-    elevation_url = elevation_url = str(Path(__file__).resolve().parent / "GEBCO_2014_2D-AT.nc")
+    gebco_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2Fgebco&files=GEBCO_2014_2D-AT.nc&downloadStartSecret=a0j7m20kfal"
     airports_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2F&files=ne_10m_airports.gpkg"
     roads_url = "https://tubcloud.tu-berlin.de/s/567ckizz2Y6RLQq/download?path=%2F&files=ne_10m_roads.gpkg"
+    
+    urlretrieve(gebco_url, basename("GEBCO_2014_2D-AT.nc"))
+
+    elevation_url = "GEBCO_2014_2D-AT.nc"
 
     countries = gpd.read_file(shape_url).set_index("name")
     shape = countries.to_crs(excluder_wind.crs).loc[["AT"]].geometry

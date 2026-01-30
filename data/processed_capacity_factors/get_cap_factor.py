@@ -21,8 +21,8 @@ def get_pv_and_wind(regions, excluder_solar, excluder_wind, density=3.0):
     #co_25 = ""
     url = "https://tubcloud.tu-berlin.de/s/pcwa634tRJMy2Xo/download?path=%2F&files=" + co_19
     urlretrieve(url, co_19)
-    cutout2 = atlite.Cutout(path=co_19)
-    cutout2
+    cutout = atlite.Cutout(path=co_19)
+    cutout
 
     # 2. Ermittlung availability
     A_pv = cutout.availabilitymatrix(regions.geometry, excluder_solar)

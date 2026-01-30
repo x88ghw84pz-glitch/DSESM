@@ -6,13 +6,20 @@ from atlite.gis import ExclusionContainer
 
 def get_pv_and_wind(regions, excluder_solar, excluder_wind, density=3.0):
 
+    # --- Austria bbox + 0.25° buffer ---
+    lon_min = 9.5  - 0.25   # west
+    lon_max = 17.5 + 0.25   # east
+
+    lat_max = 49.0 + 0.25   # north
+    lat_min = 46.2 - 0.25   # south
+
     # 1. Step Cut out
     cutout = atlite.Cutout(
-    path="cutouts/nl_era5_test.nc",          # where it will be saved
+    path="cutouts/at_era5_test.nc",          # where it will be saved
     module="era5",                           # tells atlite to use ERA5 via CDS
-    x=slice(3.0, 7.5),                       # lon range (west..east) -> alter to Aust + (add a buffer of 0.25 degrees).
-    y=slice(54.0, 50.5),                     # lat range (north..south) -> alter to Aust + (add a buffer of 0.25 degrees).
-    time=slice("2020-01-01", "2020-01-02"),  # time range
+    x=slice(lon_min, lon_max),                       # lon range (west..east) -> alter to Aust + (add a buffer of 0.25 degrees).
+    y=slice(lat_max,lat_min ),                     # lat range (north..south) -> alter to Aust + (add a buffer of 0.25 degrees).
+    time=slice("2024-01-01", "2025-01-02"),  # time range
     )
 
     # 2. Ermittlung availability

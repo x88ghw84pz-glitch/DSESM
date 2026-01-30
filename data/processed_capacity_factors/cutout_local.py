@@ -36,7 +36,6 @@ def get_cutout():
     return cutout
 
 
-
 def get_availability(cutout, regions, excluder_solar, excluder_wind):
     A_pv = cutout.availabilitymatrix(regions.geometry, excluder_solar)
     A_w  = cutout.availabilitymatrix(regions.geometry, excluder_wind)

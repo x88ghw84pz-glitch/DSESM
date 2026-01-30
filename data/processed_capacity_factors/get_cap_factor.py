@@ -59,4 +59,9 @@ def get_pv_and_wind(regions, excluder_solar, excluder_wind, density=3.0):
     )
     wind_cf = wind_gen / wind_cap
 
+    # Align Timeseries: Removes 2020 timestep to only have 2019 time series 
+    weather_year = pv_cf_df.index[0].year  
+    pv_cf_df   = pv_cf_df[pv_cf_df.index.year == weather_year]
+    wind_cf_df = wind_cf_df[wind_cf_df.index.year == weather_year]
+
     return pv_cap, pv_cf, wind_cap, wind_cf

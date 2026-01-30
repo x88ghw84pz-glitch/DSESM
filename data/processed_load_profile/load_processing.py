@@ -1,6 +1,6 @@
 import pandas as pd
 
-def regional_load():
+def get_regional_load():
     
     # national GEGIS time series 
     

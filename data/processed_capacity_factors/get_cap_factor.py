@@ -1,6 +1,8 @@
 import xarray as xr
 import atlite
 import geopandas as gpd
+from urllib.request import urlretrieve
+
 from atlite.gis import ExclusionContainer
 
 
@@ -13,23 +15,14 @@ def get_pv_and_wind(regions, excluder_solar, excluder_wind, density=3.0):
         wind_cf (xr.DataArray): wind capacity factor time series per region
     """
 
-    # --- Austria bbox + 0.25° buffer ---
-    lon_min = 9.5  - 0.25   # west
-    lon_max = 17.5 + 0.25   # east
-
-    lat_max = 49.0 + 0.25   # north
-    lat_min = 46.2 - 0.25   # south
-
     # 1. Step Cut out
-    cutout = atlite.Cutout(
-    path="cutouts/at_era5_test.nc",          # where it will be saved
-    module="era5",                           # tells atlite to use ERA5 via CDS
-    x=slice(lon_min, lon_max),                       # lon range (west..east) -> alter to Aust + (add a buffer of 0.25 degrees).
-    y=slice(lat_min,lat_max ),                     # lat range (north..south) -> alter to Aust + (add a buffer of 0.25 degrees).
-    time=slice("2024-01-01", "2025-01-02"),  # time range
-    )
-
-    cutout.prepare(compression=None)  
+    
+    co_19 = "era5_aut_2019.nc"
+    #co_25 = ""
+    url = "https://tubcloud.tu-berlin.de/s/pcwa634tRJMy2Xo/download?path=%2F&files=" + co_19
+    urlretrieve(url, co_19)
+    cutout2 = atlite.Cutout(path=co_19)
+    cutout2
 
     # 2. Ermittlung availability
     A_pv = cutout.availabilitymatrix(regions.geometry, excluder_solar)
@@ -58,6 +51,12 @@ def get_pv_and_wind(regions, excluder_solar, excluder_wind, density=3.0):
         return_capacity=True,
     )
     wind_cf = wind_gen / wind_cap
+    
+    # 5. Turn into dataframes fpr pypsa model
+    pv_cf_df   = pv_cf.to_pandas()
+    wind_cf_df = wind_cf.to_pandas()
+    pv_cap_s   = pv_cap.to_pandas()
+    wind_cap_s = wind_cap.to_pandas()
 
     # Align Timeseries: Removes 2020 timestep to only have 2019 time series 
     weather_year = pv_cf_df.index[0].year  

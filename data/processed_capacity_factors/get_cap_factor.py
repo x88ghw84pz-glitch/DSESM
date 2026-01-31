@@ -73,4 +73,4 @@ def get_pv_and_wind(regions, excluder_solar, excluder_wind, sens_analysis, densi
     pv_cf_df   = pv_cf_df[pv_cf_df.index.year == weather_year]
     wind_cf_df = wind_cf_df[wind_cf_df.index.year == weather_year]
 
-    return pv_cap, pv_cf, wind_cap, wind_cf
+    return pv_cap, pv_cf, wind_cap, wind_cf, weather_year

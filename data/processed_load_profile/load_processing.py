@@ -9,7 +9,7 @@ def get_regional_load():
     df_gegis = pd.read_csv(url_gegis, index_col=0, parse_dates=True)
 
     # national load for Austria
-    load_au = df_gegis["AU"]
+    load_au = df_gegis["AT"]
 
     
     # Population by region 

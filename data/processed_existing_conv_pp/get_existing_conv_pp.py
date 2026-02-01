@@ -4,7 +4,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 
 def get_existing_conv_pp(regions):
-    url= "https://raw.githubusercontent.com/wri/global-power-plant-database/refs/heads/master/output_database/global_power_plant_database.csv"
+    url= "https://raw.githubusercontent.com/wri/global-power-plant-database/refs/heads/master/output_database/global_power_plant_database.csv" #data is from 2021
     #datei konnte nicht aus tu hub ausgelesen werden da es keine dowload file war -> option 1 local einlesen, option2 aus git hub 
     conv_energy = pd.read_csv(url, low_memory=False)
 
